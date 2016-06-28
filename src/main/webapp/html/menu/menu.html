@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!--编码格式UTF-8-->
+    <meta charset="UTF-8">
+
+    <!--favicon.ico-->
+    <link rel="icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <link rel="shortcut icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <!-- latest Angular javascript -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular.min.js"></script>
+
+    <!-- animate -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular-animate.min.js"></script>
+
+    <!--bootstrap css-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--jquery-->
+    <script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+    <!--bootstrap js-->
+    <script src="http://cdn.bootcss.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <!--app-->
+    <script src="/js/module/menu.js"></script>
+    <script src="/js/controller/menu.js"></script>
+
+    <title>菜单管理</title>
+</head>
+<body>
+<div ng-app="modifyMenuApp" ng-controller="modifyMenuController" style="width: 80%;margin: auto">
+    <nav class="navbar navbar-inverse" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">菜单管理</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        菜单菜单 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="/" target="_self">返回首页</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div style="display: inline">
+        <div style="width: 20%;float: left">
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#oneIndex">
+                                所有根结点
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="oneIndex" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <button type="button" ng-click="editMenuItem(item.id)" class="btn btn-primary" ng-repeat="item in roots">{{item.menuName}}</button>
+                            <button type="button" ng-click="addRootMenu()" class="btn btn-primary">新增节点</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default" ng-repeat="m in menus">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a data-toggle="collapse" data-parent="#accordion"
+                               href="#collapse{{$index}}">
+                                {{m.menuName}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse{{$index}}" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <button type="button" ng-click="editMenuItem(item.id)" class="btn btn-primary" ng-repeat="item in m.childMenus">{{item.menuName}}</button>
+                            <button type="button" ng-click="addChildMenu(m.id)" class="btn btn-primary">新增节点</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div style="width: 80%;float: right">
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="firstname" class="col-sm-2 control-label">菜单名字</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="firstname"
+                               placeholder="请输入菜单名" ng-model="itemForm.menuName">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="lastname" class="col-sm-2 control-label">菜单地址</label>
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" id="lastname"
+                               placeholder="请输入地址" ng-model="itemForm.menuLink">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-default" ng-click="saveMenuItem()">保存</button>
+                        <button type="submit" class="btn btn-default" ng-click="cancelEditMenuItem()">取消</button>
+                        <button type="submit" class="btn btn-default" ng-click="deleteMenuItem(itemForm.id)">删除</button>
+                    </div>
+                </div>
+            </form>
+            <div id="warn" class="alert alert-warning" ng-show="alertConfig.show">
+                <a href="#" class="close" data-dismiss="alert">&times;</a>
+                <strong>{{alertConfig.message}}</strong>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

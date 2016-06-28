@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!--编码格式UTF-8-->
+    <meta charset="UTF-8">
+
+    <!--favicon.ico-->
+    <link rel="icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <link rel="shortcut icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <!-- latest Angular javascript -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular.min.js"></script>
+
+    <!-- animate -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular-animate.min.js"></script>
+
+    <!--bootstrap css-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--jquery-->
+    <script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+    <!--bootstrap js-->
+    <script src="http://cdn.bootcss.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <!--app-->
+    <script src="/js/module/ucloud.js"></script>
+
+    <script src="/js/controller/ucloud.js"></script>
+
+    <title>UCLOUD-清除缓存</title>
+</head>
+<body>
+<div ng-app="ucloudApp" ng-controller="UCloudController" style="width: 100%;margin: auto">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">UCLOUD</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">首页</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="padding-top: 50px;width: 80%;margin: auto">
+        <button type="button" class="btn btn-primary btn-lg" style="text-shadow: black 5px 3px 3px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span>清除URL缓存
+        </button>
+        <div>
+            <table class="table">
+                <caption>UCloud-CDN-DATA</caption>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>UCDN/ID</th>
+                    <th>域名</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-class="$index % 2 == 0?'success':'danger'"ng-repeat="d in domainShowSet">
+                    <td>{{$index + 1}}</td>
+                    <td>{{d.DomainId}}</td>
+                    <td>{{d.Domain}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <ul class="pagination">
+                <li ng-class="p.p == currentIndex?'active':''" ng-repeat="p in pages"><a ng-click="loadPage(p.p)">{{p.p}}</a></li>
+            </ul>
+        </div>
+        <div>
+            <label class="checkbox-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios1"
+                       ng-model="cloudForm.file" value="true" ng-checked="true" required>文件
+            </label>
+            <label class="checkbox-inline">
+                <input type="radio" name="optionsRadiosinline" id="optionsRadios2"
+                       ng-model="cloudForm.file" value="false">目录
+            </label>
+        </div>
+        <div>
+            <table class="table">
+                <caption>缓存清除列表</caption>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>URL</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-class="$index % 2 == 0?'success':'danger'"ng-repeat="u in cloudForm.urls">
+                    <td>{{$index + 1}}</td>
+                    <td>{{u.url}}</td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs" ng-click="deleteUrl($index)">
+                        删除
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <div class="input-group">
+                <input type="text" class="form-control" ng-model="cloudUrl.url">
+               <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" ng-click="addUrl()">
+                     添加
+                  </button>
+               </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+        <button type="button" class="btn btn-info" ng-click="clearUCloudCache()">清除</button>
+        <br/>
+        <div id="alter" class="alert alert-success" ng-show="alertConfig.show">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>{{alertConfig.message}}</strong>
+        </div>
+    </div>
+</div>
+</body>
+</html>

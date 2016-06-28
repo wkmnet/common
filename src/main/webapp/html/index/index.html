@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <!--编码格式UTF-8-->
+    <meta charset="UTF-8">
+
+    <!--favicon.ico-->
+    <link rel="icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <link rel="shortcut icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <!-- latest Angular javascript -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular.min.js"></script>
+
+    <!-- animate -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular-animate.min.js"></script>
+
+    <!--bootstrap css-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--jquery-->
+    <script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+    <!--bootstrap js-->
+    <script src="http://cdn.bootcss.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <!--index-->
+    <script src="/js/module/index.js"></script>
+    <!--index-->
+    <script src="/js/controller/index.js"></script>
+
+    <title>链接导航--首页</title>
+</head>
+<body>
+<div ng-app="indexApp" ng-controller="loadMenuController" style="width: 80%;margin: auto">
+    <nav class="navbar navbar-inverse .navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">链接导航</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        导航管理 <b class="caret"></b>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a href="manageMenu" target="_self">菜单管理</a>
+                            <a href="qrcode" target="_blank">二维码工具</a>
+                            <a href="barrageFile" target="_blank">弹幕文件</a>
+                            <a href="clearUCloudCache" target="_blank">清除UCloud缓存</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="panel panel-default" ng-repeat="m in menus">
+        <div class="panel-heading">
+            <h3 class="panel-title">
+                {{m.menuName}}
+            </h3>
+        </div>
+        <div class="panel-body">
+            <a style="padding: 10px" href="{{ch.menuLink}}" target="_blank" ng-repeat="ch in m.childMenus">
+                {{ch.menuName}}
+            </a>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!--编码格式UTF-8-->
+    <meta charset="UTF-8">
+
+    <!--favicon.ico-->
+    <link rel="icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <link rel="shortcut icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <!-- latest Angular javascript -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular.min.js"></script>
+
+    <!-- animate -->
+    <script src="http://cdn.bootcss.com/angular.js/1.4.2/angular-animate.min.js"></script>
+
+    <!--bootstrap css-->
+    <link href="http://cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--jquery-->
+    <script src="http://cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+    <!--bootstrap js-->
+    <script src="http://cdn.bootcss.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <!--app-->
+    <script src="/js/module/qrcode.js"></script>
+    <script src="/js/controller/qrcode.js"></script>
+
+    <title>二维码生成</title>
+</head>
+<body>
+<div ng-app="toolApp" ng-controller="toolController" style="width: 80%;margin: auto">
+    <nav class="navbar navbar-inverse .navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">二维码</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">首页</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="padding-left: 50px">
+        <button type="button" class="btn btn-primary btn-lg" style="text-shadow: black 5px 3px 3px;">
+            <span class="glyphicon glyphicon-user"></span>二维码生成
+        </button>
+        <div class="form-group">
+            <label for="input">输入内容:</label>
+            <textarea class="form-control" rows="6" id="input" ng-model="inputData.content"></textarea>
+        </div>
+        <button type="button" class="btn btn-info" ng-click="showImageMessage()">转换二维码</button>
+        <br/>
+        <div class="page-header">
+            <h2>
+                <small>二维码如下:</small>
+            </h2>
+        </div>
+        <p>
+        <div class="row">
+            <div class="col-sm-6 col-md-3">
+                <a href="#" class="thumbnail">
+                    <img src="{{imageResource.src}}"
+                         alt="{{imageResource.alt}}">
+                </a>
+            </div>
+        </div>
+        <div id="m" class="alert alert-success" ng-show="alertConfig.show">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>{{alertConfig.message}}</strong>
+        </div>
+        </p>
+    </div>
+</div>
+</body>
+</html>
