@@ -54,11 +54,11 @@ public class CommonConfig extends JFinalConfig {
     public void configConstant(Constants me) {
         prop = PropKit.use("system.properties");
         Prop temp = PropKit.use(new File(prop.get("cloud.key.file")));
-        if(!StringUtils.isBlank(prop.get("cloud.public.key"))){
-            ConstantUtil.CLOUD_PUBLIC_KEY = prop.get("cloud.public.key");
+        if(!StringUtils.isBlank(temp.get("cloud.public.key"))){
+            ConstantUtil.CLOUD_PUBLIC_KEY = temp.get("cloud.public.key");
         }
-        if(!StringUtils.isBlank(prop.get("cloud.private.key"))){
-            ConstantUtil.CLOUD_PRIVATE_KEY = prop.get("cloud.private.key");
+        if(!StringUtils.isBlank(temp.get("cloud.private.key"))){
+            ConstantUtil.CLOUD_PRIVATE_KEY = temp.get("cloud.private.key");
         }
         //开发模式
         if(prop.getBoolean("open.dev.model")) {
