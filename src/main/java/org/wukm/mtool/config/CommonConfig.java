@@ -14,6 +14,7 @@ import com.jfinal.aop.Interceptor;
 import com.jfinal.config.*;
 import com.jfinal.core.Controller;
 import com.jfinal.handler.Handler;
+import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.activerecord.dialect.MysqlDialect;
@@ -29,6 +30,7 @@ import org.wukm.mtool.routes.HtmlRoutes;
 import org.wukm.mtool.routes.RestfulRoutes;
 import org.wukm.mtool.util.ConstantUtil;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -51,13 +53,13 @@ public class CommonConfig extends JFinalConfig {
     @Override
     public void configConstant(Constants me) {
         prop = PropKit.use("system.properties");
+        Prop temp = PropKit.use(new File(prop.get("cloud.key.file")));
         if(!StringUtils.isBlank(prop.get("cloud.public.key"))){
             ConstantUtil.CLOUD_PUBLIC_KEY = prop.get("cloud.public.key");
         }
         if(!StringUtils.isBlank(prop.get("cloud.private.key"))){
             ConstantUtil.CLOUD_PRIVATE_KEY = prop.get("cloud.private.key");
         }
-
         //开发模式
         if(prop.getBoolean("open.dev.model")) {
             me.setDevMode(true);
