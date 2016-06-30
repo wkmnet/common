@@ -49,7 +49,7 @@ public class CloudService {
         } else {
             params.put("Type","dir");
         }
-        params.put("DomainId","ucdn-rjez4i");
+        params.put("DomainId",body.getString("domainId"));
         JSONArray urls = body.getJSONArray("urls");
         for(int i = 0;i < urls.size();i++){
             JSONObject jsonObject = urls.getJSONObject(i);

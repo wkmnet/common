@@ -5,7 +5,7 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
 
     $scope.alertConfig = {"show":false,"message":""};
 
-    $scope.cloudForm = {"urls":[],"file":true};
+    $scope.cloudForm = {"urls":[],"file":true,"domainId":""};
 
     $scope.cloudUrl = {"url":""};
 

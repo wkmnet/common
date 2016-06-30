@@ -55,6 +55,7 @@
                     <th>序号</th>
                     <th>UCDN/ID</th>
                     <th>域名</th>
+                    <th>选择</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -62,6 +63,14 @@
                     <td>{{$index + 1}}</td>
                     <td>{{d.DomainId}}</td>
                     <td>{{d.Domain}}</td>
+                    <td>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="optionsCloudRadios" id="optionsRadios{{$index}}"
+                                       value="{{d.DomainId}}" ng-model="cloudForm.domainId">
+                            </label>
+                        </div>
+                    </td>
                 </tr>
                 </tbody>
             </table>
@@ -71,7 +80,7 @@
         </div>
         <div>
             <label class="checkbox-inline">
-                <input type="radio" name="optionsRadiosinline" id="optionsRadios1"
+                <input type="radio" name="optionsRadiosinline" id="loptionsRadios1"
                        ng-model="cloudForm.file" value="true" ng-checked="true" required>文件
             </label>
             <label class="checkbox-inline">
