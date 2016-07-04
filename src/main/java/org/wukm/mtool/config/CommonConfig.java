@@ -10,7 +10,6 @@
  */
 package org.wukm.mtool.config;
 
-import com.jfinal.aop.Interceptor;
 import com.jfinal.config.*;
 import com.jfinal.core.Controller;
 import com.jfinal.handler.Handler;
@@ -23,9 +22,9 @@ import com.jfinal.render.ViewType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wukm.mtool.controller.TestController;
 import org.wukm.mtool.interceptor.LoggerInterceptor;
 import org.wukm.mtool.model.ToolMenu;
+import org.wukm.mtool.plugin.QuartzPlugin;
 import org.wukm.mtool.routes.HtmlRoutes;
 import org.wukm.mtool.routes.RestfulRoutes;
 import org.wukm.mtool.util.ConstantUtil;
@@ -117,5 +116,8 @@ public class CommonConfig extends JFinalConfig {
         mysqlPlugin.setTransactionLevel(8);
         mysqlPlugin.setShowSql(true);
         mysqlPlugin.addMapping("toolMenu","id", ToolMenu.class);
+
+        QuartzPlugin quartzPlugin = new QuartzPlugin("jobs.properties");
+        me.add(quartzPlugin);
     }
 }
