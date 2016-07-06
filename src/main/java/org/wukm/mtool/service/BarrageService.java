@@ -107,12 +107,12 @@ public class BarrageService {
             String body = JSONArray.fromObject(l).toString();
             postBarrage(body);
         }
-
     }
     private void postBarrage(String body){
         Response response = null;
         try {
             Request request = Request.Post(url);
+            logger.info("request body:" + body);
             response = request.bodyString(body, ContentType.APPLICATION_JSON).execute();
             logger.info(response.returnContent().asString());
         } catch (ClientProtocolException e){

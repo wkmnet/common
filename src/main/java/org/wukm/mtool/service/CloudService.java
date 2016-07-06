@@ -10,18 +10,19 @@
  */
 package org.wukm.mtool.service;
 
-import com.google.common.collect.ImmutableMap;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.http.client.fluent.Content;
 import org.apache.http.client.fluent.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wukm.mtool.model.CloudBean;
 import org.wukm.mtool.util.CommonUtil;
 import org.wukm.mtool.util.ConstantUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,7 +54,29 @@ public class CloudService {
         JSONArray urls = body.getJSONArray("urls");
         for(int i = 0;i < urls.size();i++){
             JSONObject jsonObject = urls.getJSONObject(i);
-            params.put("UrlList." + i,jsonObject.getString("url"));
+            StringBuilder temp = new StringBuilder();
+            temp.append("http://");
+            temp.append(body.getString("domain"));
+            if(!jsonObject.getString("url").startsWith("/")){
+                temp.append("/");
+            }
+            temp.append(jsonObject.getString("url"));
+            if(body.getBoolean("file")){
+                if(jsonObject.getString("url").endsWith("/")){
+                    JSONObject res = new JSONObject();
+                    res.put("error","not file");
+                    res.put("message","请选择目录");
+                    return res;
+                }
+            } else {
+                if(!jsonObject.getString("url").endsWith("/")){
+                    JSONObject res = new JSONObject();
+                    res.put("error","not dir");
+                    res.put("message","请选择文件");
+                    return res;
+                }
+            }
+            params.put("UrlList." + i,temp.toString());
         }
 
         params.put("Signature", CommonUtil.siginUcloud(params));
@@ -91,4 +114,24 @@ public class CloudService {
         return map;
     }
 
+    public boolean addUrl(JSONObject input){
+        CloudBean cloud = new CloudBean();
+        cloud.put("ucdnId",input.get("ucdnId"));
+        cloud.put("url",input.get("url"));
+        logger.info("save:" + input.toString(4));
+        return cloud.save();
+    }
+
+    public boolean deleteByCloudId(String id){
+        return new CloudBean().deleteById(id);
+    }
+
+    public List<CloudBean> findByCloudId(JSONObject input){
+        List<CloudBean> list =  CloudBean.cloud.find("select * from cloud where ucdnId=?",input.getString("ucdnId"));
+        if(list == null || list.size() == 0){
+            return null;
+        }
+        logger.info("get:" + JSONArray.fromObject(list).toString(4));
+        return list;
+    }
 }

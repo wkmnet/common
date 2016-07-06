@@ -26,3 +26,11 @@ create table if not exists tradeTime(
     endTime varchar(10) comment '结束时间'
 )ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
+--U-CLOUD-CACHE
+drop table if exists cloud;
+create table if not exists cloud(
+    id int(32) primary key AUTO_INCREMENT comment '主健',
+    ucdnId varchar(50) not null comment 'ucdid',
+    url varchar(200) comment '路径'
+)ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
+

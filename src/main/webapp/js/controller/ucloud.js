@@ -5,7 +5,7 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
 
     $scope.alertConfig = {"show":false,"message":""};
 
-    $scope.cloudForm = {"urls":[],"file":true,"domainId":""};
+    $scope.cloudForm = {"urls":[],"file":true,"domainId":"","domain":""};
 
     $scope.cloudUrl = {"url":""};
 
@@ -55,13 +55,61 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
         });
     };
     $scope.addUrl = function (){
-        $scope.cloudForm.urls.push(JSON.parse(JSON.stringify($scope.cloudUrl)));
-        $scope.cloudUrl.url = "";
+        //$scope.cloudForm.urls.push(JSON.parse(JSON.stringify($scope.cloudUrl)));
+        if(!$scope.cloudForm.domainId){
+            $scope.alertMessage("清选择UCDNID");
+            return;
+        }
+        $scope.addCloudCache();
+    };
+
+    $scope.switchCloud = function (domain){
+        $scope.cloudForm.domain = domain;
+        $scope.loadCloudUrl();
+    }
+
+    $scope.loadCloudUrl = function (){
+        $http.get("/api/cloud/" + $scope.cloudForm.domainId).success(function(response){
+            if(response.data){
+                $scope.cloudForm.urls = response.data;
+                $scope.alertMessage(response.message + ";data:" + JSON.stringify(response.data));
+            } else {
+                $scope.alertMessage(response.message);
+            }
+        }).error(function(data,status) {
+            $scope.alertMessage("data=" + data + ",status=" + status);
+        });
+    }
+
+    $scope.addCloudCache = function (){
+        $http.put("/api/cloud/" + $scope.cloudForm.domainId,$scope.cloudUrl).success(function(response){
+            if(response.data){
+                $scope.alertMessage(response.message + ";data:" + JSON.stringify(response.data));
+                $scope.loadCloudUrl();
+            } else {
+                $scope.alertMessage(response.message);
+            }
+            $scope.cloudUrl.url = "";
+        }).error(function(data,status) {
+            $scope.alertMessage("data=" + data + ",status=" + status);
+        });
     };
 
     $scope.deleteUrl = function (index){
-        $scope.alertMessage("remove:" + index + ",url=" + $scope.cloudForm.urls[index].url);
-        $scope.cloudForm.urls.splice(index,1);
+        $scope.deleteCloudDomain(index);
+    };
+
+    $scope.deleteCloudDomain = function (index) {
+        $http.delete("/api/cloud/" + $scope.cloudForm.urls[index].id).success(function (response) {
+            if(response.success){
+                $scope.alertMessage(JSON.stringify(response.message));
+                $scope.loadCloudUrl();
+            } else {
+                $scope.alertMessage(response.message);
+            }
+        }).error(function(data,status) {
+            $scope.alertMessage("data=" + data + ",status=" + status);
+        });
     };
 
     $scope.alertMessage = function(message){

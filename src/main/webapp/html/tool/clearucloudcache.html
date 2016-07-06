@@ -67,7 +67,7 @@
                         <div class="radio">
                             <label>
                                 <input type="radio" name="optionsCloudRadios" id="optionsRadios{{$index}}"
-                                       value="{{d.DomainId}}" ng-model="cloudForm.domainId">
+                                       value="{{d.DomainId}}" ng-model="cloudForm.domainId" ng-click="switchCloud(d.Domain)">
                             </label>
                         </div>
                     </td>
