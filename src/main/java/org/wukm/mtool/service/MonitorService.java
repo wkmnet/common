@@ -10,7 +10,10 @@
  */
 package org.wukm.mtool.service;
 
+import net.sf.json.JSONObject;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.http.client.fluent.Request;
+import org.apache.http.client.fluent.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wukm.mtool.model.MonitorInfoBean;
@@ -311,5 +314,23 @@ public class MonitorService {
         System.out.println("剩余的物理内存=" + monitorInfo.getFreeMemory() + "kb");
         System.out.println("已使用的物理内存=" + monitorInfo.getUsedMemory() + "kb");
         System.out.println("线程总数=" + monitorInfo.getTotalThread() + "kb");
+    }
+
+
+    public JSONObject scanServer(String address){
+        Request request = Request.Get(address);
+        Response response = null;
+        try {
+            response = request.execute();
+            String body = response.returnContent().asString();
+            return JSONObject.fromObject(body);
+        } catch (Exception e){
+            logger.info("Exception:" + e.getMessage(),e);
+        } finally {
+            if(response != null){
+                response.discardContent();
+            }
+        }
+        return null;
     }
 }
