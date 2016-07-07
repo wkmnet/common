@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!--编码格式UTF-8-->
+    <meta charset="UTF-8">
+
+    <!--favicon.ico-->
+    <link rel="icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <link rel="shortcut icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <!-- latest Angular javascript -->
+    <script src="//cdn.bootcss.com/angular.js/1.4.2/angular.min.js"></script>
+
+    <!-- animate -->
+    <script src="//cdn.bootcss.com/angular.js/1.4.2/angular-animate.min.js"></script>
+
+    <!--bootstrap css-->
+    <link href="//cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--jquery-->
+    <script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+    <!--bootstrap js-->
+    <script src="//cdn.bootcss.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <!--app-->
+    <script src="/js/module/monitor.js"></script>
+
+    <script src="/js/controller/monitor.js"></script>
+
+    <title>UCLOUD-清除缓存</title>
+</head>
+<body>
+<div ng-app="monitorApp" ng-controller="MonitorController" style="width: 100%;margin: auto" ng-init="autoRefresh=false">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">服务器状态监控</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">首页</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="padding-top: 50px;width: 80%;margin: auto">
+        <button type="button" class="btn btn-primary btn-lg" style="text-shadow: black 5px 3px 3px;">
+            <span class="glyphicon glyphicon-cloud-upload"></span>服务器监控
+        </button>
+        <div>
+            <table class="table">
+                <caption>服务器状态列表</caption>
+                <thead>
+                <tr>
+                    <th>序号</th>
+                    <th>服务器名称</th>
+                    <th>服务器域名</th>
+                    <th>服务器状态</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-class="$index % 2 == 0?'success':'danger'"ng-repeat="s in serverList">
+                    <td>{{$index + 1}}</td>
+                    <td>{{s.serverName}}</td>
+                    <td>{{s.serverDomain}}</td>
+                    <td>
+                        <button type="button" class="btn btn-default btn-xs" ng-click="deleteMonitorServer(s.id)">
+                            删除
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <form class="bs-example bs-example-form" role="form" style="width: 30%">
+            <div class="input-group">
+                <span class="input-group-addon">服务名称</span>
+                <input ng-model="serverBean.serverName" type="text" class="form-control" placeholder="XXX测试服务器">
+            </div><br>
+            <div class="input-group">
+                <span class="input-group-addon">服务域名</span>
+                <input ng-model="serverBean.serverDomain" type="text" class="form-control" placeholder="www.exam.com">
+            </div><br>
+            <div class="input-group">
+                <span class="input-group-addon">检测地址</span>
+                <input ng-model="serverBean.checkInterface" type="text" class="form-control" placeholder="http://xxx.com/abc.json">
+            </div><br>
+        </form>
+        <button type="button" class="btn btn-primary"
+                data-toggle="button" ng-click="addMonitorServer()"> 保存
+        </button>
+    </div>
+</div>
+</body>
+</html>

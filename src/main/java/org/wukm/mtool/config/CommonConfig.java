@@ -24,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wukm.mtool.interceptor.LoggerInterceptor;
 import org.wukm.mtool.model.CloudBean;
+import org.wukm.mtool.model.ServerBean;
 import org.wukm.mtool.model.ToolMenu;
 import org.wukm.mtool.plugin.QuartzPlugin;
 import org.wukm.mtool.routes.HtmlRoutes;
@@ -118,6 +119,7 @@ public class CommonConfig extends JFinalConfig {
         mysqlPlugin.setShowSql(true);
         mysqlPlugin.addMapping("toolMenu","id", ToolMenu.class);
         mysqlPlugin.addMapping("cloud","id", CloudBean.class);
+        mysqlPlugin.addMapping("ServerList","id", ServerBean.class);
 
         QuartzPlugin quartzPlugin = new QuartzPlugin("jobs.properties");
         me.add(quartzPlugin);

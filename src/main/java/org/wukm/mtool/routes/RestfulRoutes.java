@@ -11,10 +11,7 @@
 package org.wukm.mtool.routes;
 
 import com.jfinal.config.Routes;
-import org.wukm.mtool.controller.MenuController;
-import org.wukm.mtool.controller.QrcodeController;
-import org.wukm.mtool.controller.UcloudController;
-import org.wukm.mtool.controller.UploadController;
+import org.wukm.mtool.controller.*;
 
 /**
  * Create with IntelliJ IDEA
@@ -34,5 +31,6 @@ public class RestfulRoutes extends Routes {
         add("/api/qrcode", QrcodeController.class);
         add("/api/upload", UploadController.class);
         add("/api/cloud", UcloudController.class);
+        add("/api/monitor",MonitorController.class);
     }
 }

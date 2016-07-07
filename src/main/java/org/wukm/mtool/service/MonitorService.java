@@ -10,8 +10,10 @@
  */
 package org.wukm.mtool.service;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
 import org.slf4j.Logger;
@@ -21,9 +23,12 @@ import org.wukm.mtool.model.MonitorInfoBean;
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
 
 import com.sun.management.OperatingSystemMXBean;
+import org.wukm.mtool.model.ServerBean;
 import org.wukm.mtool.util.CommonUtil;
 
 
@@ -322,6 +327,7 @@ public class MonitorService {
         Response response = null;
         try {
             response = request.execute();
+            HttpResponse hr = response.returnResponse();
             String body = response.returnContent().asString();
             return JSONObject.fromObject(body);
         } catch (Exception e){
@@ -332,5 +338,23 @@ public class MonitorService {
             }
         }
         return null;
+    }
+
+    public List<ServerBean> listServer(){
+        List<ServerBean> result =
+                ServerBean.SERVER_BEAN.find("select * from ServerList");
+        if(result == null){
+            result = new ArrayList<>();
+        }
+        logger.info("server list:" + JSONArray.fromObject(result).toString(4));
+        return result;
+    }
+
+    public boolean addServer(ServerBean server){
+        return server.save();
+    }
+
+    public boolean deleteServer(String id){
+        return new ServerBean().deleteById(id);
     }
 }

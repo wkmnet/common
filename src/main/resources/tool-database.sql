@@ -34,3 +34,12 @@ create table if not exists cloud(
     url varchar(200) comment '路径'
 )ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;
 
+--Server List
+drop table if exists ServerList;
+create table if not exists ServerList(
+    id int(32) primary key AUTO_INCREMENT comment '主健',
+    serverName varchar(50) not null comment '服务名称',
+    serverDomain varchar(100) not null comment '服务域名',
+    checkInterface varchar(200) not null comment '检查接口',
+    status int(1) not null DEFAULT 0 comment '状态:0-异常;1-正常'
+)ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8;

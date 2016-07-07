@@ -49,10 +49,10 @@ public class UcloudController extends RestfulController{
         }
         CloudService cloudService = Duang.duang(CloudService.class);
         JSONObject result = cloudService.clearUrlCache(json);
-        if(StringUtils.isBlank(result.getString("error"))){
-            renderJson(ok(result));return;
+        if(result.containsKey("error")){
+            renderJson(fail(result.getString("message")));return;
         }
-        renderJson(fail(result.getString("message")));
+        renderJson(ok(result));
     }
 
     public void show(){

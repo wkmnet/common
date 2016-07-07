@@ -39,4 +39,10 @@ public class IndexController extends ViewController {
     public void clearUCloudCache(){
         render("/html/tool/clearucloudcache.html");
     }
+    public void monitor(){
+        render("/html/tool/monitor.html");
+    }
+    public void addServerMonitor(){
+        render("/html/tool/addmonitor.html");
+    }
 }

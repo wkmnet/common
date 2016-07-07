@@ -72,7 +72,7 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
         $http.get("/api/cloud/" + $scope.cloudForm.domainId).success(function(response){
             if(response.data){
                 $scope.cloudForm.urls = response.data;
-                $scope.alertMessage(response.message + ";data:" + JSON.stringify(response.data));
+                $scope.alertMessage(response.message);
             } else {
                 $scope.alertMessage(response.message);
             }
@@ -83,8 +83,8 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
 
     $scope.addCloudCache = function (){
         $http.put("/api/cloud/" + $scope.cloudForm.domainId,$scope.cloudUrl).success(function(response){
-            if(response.data){
-                $scope.alertMessage(response.message + ";data:" + JSON.stringify(response.data));
+            if(response.success){
+                $scope.alertMessage(response.message);
                 $scope.loadCloudUrl();
             } else {
                 $scope.alertMessage(response.message);
