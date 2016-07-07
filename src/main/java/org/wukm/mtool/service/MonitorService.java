@@ -327,7 +327,6 @@ public class MonitorService {
         Response response = null;
         try {
             response = request.execute();
-            HttpResponse hr = response.returnResponse();
             String body = response.returnContent().asString();
             return JSONObject.fromObject(body);
         } catch (Exception e){
