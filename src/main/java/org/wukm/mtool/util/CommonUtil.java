@@ -179,7 +179,7 @@ public class CommonUtil {
             StringBuilder contents = new StringBuilder("<h1>" + serverName + "服务异常:</h1>");
             contents.append("<br/>");
             contents.append("<h2>" + serverName + "</h2>");
-            message.setContent(contents.toString(),"text/html" );
+            message.setContent(contents.toString(),"text/html;charset=utf-8");
             // 发送消息
             Transport.send(message);
             LOG.info("send email successfully. to" + to);

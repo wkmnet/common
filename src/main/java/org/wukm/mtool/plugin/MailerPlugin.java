@@ -51,7 +51,7 @@ public class MailerPlugin implements IPlugin{
         // 指定发送邮件的主机为 localhost
         String host = prop.get("host","smtp.exmail.qq.com");
 
-        final String password = prop.get("password","Wkm123");
+        final String password = prop.get("password","");
 
         // 获取系统属性
         Properties properties = System.getProperties();
@@ -84,8 +84,8 @@ public class MailerPlugin implements IPlugin{
             message.setSubject("服务器启动通知");
 
             // 发送 HTML 消息, 可以插入html标签
-            message.setContent("<h1>你好，监控服务已经启动，请知晓!</h1>",
-                    "text/html" );
+            message.setContent("<h1>你好,监控服务已经启动,请知晓!</h1>",
+                    "text/html;charset=utf-8");
             // 发送消息
             Transport.send(message);
             logger.info("Sent message successfully....");
