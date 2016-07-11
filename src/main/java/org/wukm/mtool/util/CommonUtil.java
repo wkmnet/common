@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -147,11 +148,13 @@ public class CommonUtil {
 
     public static void sendMail(String serverName,String content,String to){
         Prop prop = PropKit.use("mail.properties");
+        Prop keyFile = PropKit.use("system.properties");
+        Prop key = PropKit.use(new File(keyFile.get("cloud.key.file")));
         // 发件人电子邮箱
         final String from = prop.get("from","wukunmeng@vmovier.com");
         // 指定发送邮件的主机为 localhost
         String host = prop.get("host","smtp.exmail.qq.com");
-        final String password = prop.get("password","");
+        final String password = key.get("password","");
         // 获取系统属性
         Properties properties = System.getProperties();
         // 设置邮件服务器
