@@ -7,7 +7,7 @@ monitorApp.controller("MonitorController",function($scope,$http,$timeout){
 
     $scope.autoRefresh = false;
 
-    $scope.serverBean = {"serverName":"","serverDomain":"","checkInterface":""};
+    $scope.serverBean = {"serverName":"","serverDomain":"","checkInterface":"","notifyMail":""};
 
     $scope.loadMonitorServer = function () {
         $http.get("/api/monitor").success(function (response) {
@@ -33,7 +33,7 @@ monitorApp.controller("MonitorController",function($scope,$http,$timeout){
             if(response.success){
                 $scope.alertMessage(response.message);
                 $scope.loadMonitorServer();
-                $scope.serverBean = {"serverName":"","serverDomain":"","checkInterface":""};
+                $scope.serverBean = {"serverName":"","serverDomain":"","checkInterface":"","notifyMail":""};
             } else {
                 $scope.alertMessage(response.message);
             }

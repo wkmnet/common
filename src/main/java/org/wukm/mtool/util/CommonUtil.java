@@ -10,6 +10,8 @@
  */
 package org.wukm.mtool.util;
 
+import com.jfinal.kit.Prop;
+import com.jfinal.kit.PropKit;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +20,9 @@ import org.apache.http.client.utils.URLEncodedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.*;
@@ -138,5 +143,48 @@ public class CommonUtil {
         System.out.println(CommonUtil.siginUcloud(m));
         System.out.println(s);
         System.out.println(CommonUtil.sha1(s));
+    }
+
+    public static void sendMail(String serverName,String content,String to){
+        Prop prop = PropKit.use("mail.properties");
+        // 发件人电子邮箱
+        final String from = prop.get("from","wukunmeng@vmovier.com");
+        // 指定发送邮件的主机为 localhost
+        String host = prop.get("host","smtp.exmail.qq.com");
+        final String password = prop.get("password","");
+        // 获取系统属性
+        Properties properties = System.getProperties();
+        // 设置邮件服务器
+        properties.setProperty("mail.smtp.host", host);
+        //验证
+        properties.put("mail.smtp.auth", "true");
+        // 获取默认的 Session 对象。
+        Session session = Session.getDefaultInstance(properties,new Authenticator(){
+            public PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(from, password); //发件人邮件用户名、密码
+            }
+        });
+        try{
+            // 创建默认的 MimeMessage 对象。
+            MimeMessage message = new MimeMessage(session);
+            // Set From: 头部头字段
+            message.setFrom(new InternetAddress(from));
+            // Set To: 头部头字段
+            message.addRecipient(Message.RecipientType.TO,
+                    new InternetAddress(to));
+            // Set Subject: 头字段
+            message.setSubject("服务器异常通知[" + serverName + "]");
+
+            // 发送 HTML 消息, 可以插入html标签
+            StringBuilder contents = new StringBuilder("<h1>" + serverName + "服务异常:</h1>");
+            contents.append("<br/>");
+            contents.append("<h2>" + serverName + "</h2>");
+            message.setContent(contents.toString(),"text/html" );
+            // 发送消息
+            Transport.send(message);
+            LOG.info("send email successfully. to" + to);
+        }catch (MessagingException mex) {
+            LOG.error("send email exception:" + mex.getMessage(),mex);
+        }
     }
 }

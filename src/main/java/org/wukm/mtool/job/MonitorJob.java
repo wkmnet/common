@@ -22,6 +22,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wukm.mtool.model.ServerBean;
 import org.wukm.mtool.service.MonitorService;
+import org.wukm.mtool.util.CommonUtil;
 
 import java.util.List;
 
@@ -66,6 +67,11 @@ public class MonitorJob implements Job {
             } else {
                 serverBean.set("status",0);
                 output.append("change status:0");
+                if(!StringUtils.isBlank(serverBean.getStr("notifyMail"))){
+                    String content = serverBean.getStr("serverDomain") + ":服务无法连接,请尽快处理!";
+                    CommonUtil.sendMail(serverBean.getStr("serverName"),content,
+                            serverBean.getStr("notifyMail"));
+                }
             }
             serverBean.update();
             output.append(SystemUtils.LINE_SEPARATOR);

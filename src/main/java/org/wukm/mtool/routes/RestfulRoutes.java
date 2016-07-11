@@ -32,5 +32,6 @@ public class RestfulRoutes extends Routes {
         add("/api/upload", UploadController.class);
         add("/api/cloud", UcloudController.class);
         add("/api/monitor",MonitorController.class);
+        add("/api/system",SystemController.class);
     }
 }
