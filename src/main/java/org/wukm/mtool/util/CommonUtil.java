@@ -170,8 +170,16 @@ public class CommonUtil {
             // Set From: 头部头字段
             message.setFrom(new InternetAddress(from));
             // Set To: 头部头字段
-            message.addRecipient(Message.RecipientType.TO,
-                    new InternetAddress(to));
+            if(to.indexOf(";") > 0){
+                String[] tos= StringUtils.split(to,";");
+                for(String t:tos){
+                    message.addRecipient(Message.RecipientType.TO,
+                            new InternetAddress(t));
+                }
+            } else {
+                message.addRecipient(Message.RecipientType.TO,
+                        new InternetAddress(to));
+            }
             // Set Subject: 头字段
             message.setSubject("服务器异常通知[" + serverName + "]");
 
