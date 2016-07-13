@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <!--编码格式UTF-8-->
+    <meta charset="UTF-8">
+
+    <!--favicon.ico-->
+    <link rel="icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <link rel="shortcut icon" href="/images/favicon.ico" mce_href="/images/favicon.ico" type="image/x-icon">
+
+    <!-- latest Angular javascript -->
+    <script src="//cdn.bootcss.com/angular.js/1.4.2/angular.min.js"></script>
+
+    <!-- animate -->
+    <script src="//cdn.bootcss.com/angular.js/1.4.2/angular-animate.min.js"></script>
+
+    <!--bootstrap css-->
+    <link href="//cdn.bootcss.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
+
+    <!--jquery-->
+    <script src="//cdn.bootcss.com/jquery/2.0.3/jquery.min.js"></script>
+
+    <!--bootstrap js-->
+    <script src="//cdn.bootcss.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+
+    <!--app-->
+    <script src="/js/module/report.js"></script>
+    <script src="/js/controller/report.js"></script>
+
+    <title>报表小工具</title>
+</head>
+<body>
+<div ng-app="reportApp" ng-controller="ReportController" style="width: 80%;margin: auto">
+    <nav class="navbar navbar-inverse .navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">报表小工具</a>
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="/">首页</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div style="padding-left: 50px">
+        <button type="button" class="btn btn-primary btn-lg" style="text-shadow: black 5px 3px 3px;">
+            <span class="glyphicon glyphicon-cog"></span>报表工具
+        </button>
+        <div class="form-group">
+            <label for="input">输入内容:</label>
+            <textarea class="form-control" rows="6" id="input" ng-model="inputData.sql"></textarea>
+        </div>
+        <button type="button" class="btn btn-info" ng-click="outputExcel()">生成EXCEL报表</button>
+        <br/>
+        <div class="page-header" ng-show="excelResource.show">
+            <a href="{{excelResource.src}}"><span class="label label-success">下载报表文件</span></a>
+        </div>
+        <p>
+        <div id="m" class="alert alert-success" ng-show="alertConfig.show">
+            <a href="#" class="close" data-dismiss="alert">&times;</a>
+            <strong>{{alertConfig.message}}</strong>
+        </div>
+        </p>
+    </div>
+</div>
+</body>
+</html>

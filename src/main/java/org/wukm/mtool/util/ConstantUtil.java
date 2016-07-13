@@ -30,4 +30,6 @@ public class ConstantUtil {
     public static String CLOUD_PUBLIC_KEY = null;
 
     public static String CLOUD_PRIVATE_KEY = null;
+
+    public static String REPORT_CONFIG_NAME = "report";
 }

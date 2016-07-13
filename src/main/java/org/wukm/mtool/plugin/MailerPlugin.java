@@ -89,7 +89,7 @@ public class MailerPlugin implements IPlugin{
             message.setContent("<h1>你好,监控服务已经启动,请知晓!</h1>",
                     "text/html;charset=utf-8");
             // 发送消息
-            Transport.send(message);
+//            Transport.send(message);
             logger.info("Sent message successfully....");
             return true;
         }catch (MessagingException mex) {

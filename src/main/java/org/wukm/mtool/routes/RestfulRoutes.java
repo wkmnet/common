@@ -27,11 +27,12 @@ import org.wukm.mtool.controller.*;
 public class RestfulRoutes extends Routes {
     @Override
     public void config() {
-        add("/api/menu", MenuController.class);
-        add("/api/qrcode", QrcodeController.class);
-        add("/api/upload", UploadController.class);
-        add("/api/cloud", UcloudController.class);
+        add("/api/menu",MenuController.class);
+        add("/api/qrcode",QrcodeController.class);
+        add("/api/upload",UploadController.class);
+        add("/api/cloud",UcloudController.class);
         add("/api/monitor",MonitorController.class);
         add("/api/system",SystemController.class);
+        add("/api/report",ReportController.class);
     }
 }

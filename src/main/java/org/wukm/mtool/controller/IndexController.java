@@ -45,4 +45,7 @@ public class IndexController extends ViewController {
     public void addServerMonitor(){
         render("/html/tool/addmonitor.html");
     }
+    public void report(){
+        render("/html/tool/report.html");
+    }
 }

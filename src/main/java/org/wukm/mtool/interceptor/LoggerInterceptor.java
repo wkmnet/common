@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Map;
@@ -59,14 +60,22 @@ public class LoggerInterceptor implements Interceptor{
         if(map != null){
             StringBuilder para = new StringBuilder();
             for(Map.Entry<String,String[]> entry : map.entrySet()){
-                para.append(entry.getKey() + "=" + entry.getValue());
-                para.append(SystemUtils.LINE_SEPARATOR);
+                if(entry.getValue() != null) {
+                    StringBuilder vs = new StringBuilder();
+                    for (String v : entry.getValue()) {
+                        vs.append(v + ",");
+                    }
+                    vs.deleteCharAt(vs.lastIndexOf(","));
+                    para.append(entry.getKey() + "=" + vs.toString());
+                    para.append(SystemUtils.LINE_SEPARATOR);
+                }
             }
             printRequest(para);
         }
         String para = c.getPara();
         if(!StringUtils.isBlank(para)){
-            printRequest(para.split("-"));
+            String[] paras = para.split("-");
+            printRequest(Arrays.asList(paras));
         }
         inv.invoke();
 
@@ -107,7 +116,11 @@ public class LoggerInterceptor implements Interceptor{
      * @param value
      */
     private void printRequest(Object value){
-        logger.info(SystemUtils.LINE_SEPARATOR + "request:" + SystemUtils.LINE_SEPARATOR + value);
+        if(value instanceof String){
+            logger.info(SystemUtils.LINE_SEPARATOR + "request:" + SystemUtils.LINE_SEPARATOR + value.toString());
+        } else {
+            logger.info(SystemUtils.LINE_SEPARATOR + "request:" + SystemUtils.LINE_SEPARATOR + value);
+        }
     }
 
     /**

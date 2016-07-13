@@ -126,5 +126,13 @@ public class CommonConfig extends JFinalConfig {
         mysqlPlugin.addMapping("cloud","id", CloudBean.class);
         mysqlPlugin.addMapping("ServerList","id", ServerBean.class);
 
+        C3p0Plugin reportDatasource = new C3p0Plugin(loadPropertyFile("report.properties"));
+        me.add(reportDatasource);
+        ActiveRecordPlugin reportMysqlPlugin = new ActiveRecordPlugin(ConstantUtil.REPORT_CONFIG_NAME,reportDatasource);
+        me.add(reportMysqlPlugin);
+        reportMysqlPlugin.setDevMode(true); //是否开启开发模式
+        reportMysqlPlugin.setDialect(new MysqlDialect());
+        reportMysqlPlugin.setTransactionLevel(8);
+        reportMysqlPlugin.setShowSql(true);
     }
 }
