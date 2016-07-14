@@ -13,10 +13,8 @@ package org.wukm.mtool.plugin;
 import com.jfinal.kit.Prop;
 import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.IPlugin;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.wukm.mtool.util.ConstantUtil;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;

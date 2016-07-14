@@ -15,8 +15,6 @@ import com.jfinal.kit.PropKit;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.math.NumberUtils;
-import org.apache.http.client.utils.URLEncodedUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,6 +24,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.Instant;
 import java.util.*;
 
 /**
@@ -144,6 +143,9 @@ public class CommonUtil {
         System.out.println(CommonUtil.siginUcloud(m));
         System.out.println(s);
         System.out.println(CommonUtil.sha1(s));
+        System.out.println(Calendar.getInstance().get(Calendar.SECOND));
+        System.out.println(Instant.now().getEpochSecond());
+        System.out.println(System.currentTimeMillis());
     }
 
     public static void sendMail(String serverName,String content,String to){
