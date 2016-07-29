@@ -5,9 +5,11 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
 
     $scope.alertConfig = {"show":false,"message":""};
 
-    $scope.cloudForm = {"urls":[],"file":true,"domainId":"","domain":""};
+    $scope.cloudForm = {"urls":[],"file":false,"domainId":"","domain":""};
 
     $scope.cloudUrl = {"url":""};
+
+    $scope.add = {"show":true};
 
     $scope.loadCloudDomain = function () {
         $http.get("/api/cloud").success(function (response) {
@@ -44,6 +46,7 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
     }
 
     $scope.clearUCloudCache = function (){
+        $scope.add.show = false;
         $http.post("/api/cloud",$scope.cloudForm).success(function(response){
             if(response.data){
                 $scope.alertMessage(response.message + ";data:" + JSON.stringify(response.data));
@@ -117,6 +120,7 @@ ucloudApp.controller("UCloudController",function($scope,$http,$timeout){
         $scope.alertConfig.show = true;
         $timeout(function(){
             $scope.alertConfig.show = false;
+            $scope.add.show = true;
         },2000);
     };
 });
