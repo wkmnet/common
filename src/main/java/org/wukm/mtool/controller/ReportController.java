@@ -41,6 +41,9 @@ public class ReportController extends RestfulController {
 
     public void show(){
         String sql = getPara("sql");
+        logger.info("get sql:" + sql);
+        sql = StringUtils.replace(sql,"@","%");
+        logger.info("new sql:" + sql);
         try {
             Connection connection = DbKit.getConfig(ConstantUtil.REPORT_CONFIG_NAME).getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
