@@ -14,9 +14,11 @@ import com.jfinal.aop.Before;
 import com.jfinal.aop.Duang;
 import com.jfinal.ext.interceptor.Restful;
 import com.jfinal.plugin.activerecord.DbKit;
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.wukm.mtool.service.ExcelService;
+import org.wukm.mtool.util.CommonUtil;
 import org.wukm.mtool.util.ConstantUtil;
 
 import java.io.File;
@@ -24,6 +26,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Create with IntelliJ IDEA
@@ -40,12 +43,13 @@ import java.util.List;
 public class ReportController extends RestfulController {
 
     public void show(){
+        String datasource = getPara("ds");
         String sql = getPara("sql");
         logger.info("get sql:" + sql);
         sql = StringUtils.replace(sql,"@","%");
         logger.info("new sql:" + sql);
         try {
-            Connection connection = DbKit.getConfig(ConstantUtil.REPORT_CONFIG_NAME).getConnection();
+            Connection connection = DbKit.getConfig(datasource).getConnection();
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet rs = statement.executeQuery();
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -87,5 +91,13 @@ public class ReportController extends RestfulController {
             logger.info("SQLException:" + e.getMessage(),e);
         }
         renderJson(fail("创建Excel失败"));
+    }
+
+    public void add(){
+        JSONArray list = new JSONArray();
+        for(Map.Entry<Integer,String> entry:ConstantUtil.REPORT_CONFIG_NAME.entrySet()){
+            list.add(entry.getKey(),entry.getValue());
+        }
+        renderJson(ok(list));
     }
 }

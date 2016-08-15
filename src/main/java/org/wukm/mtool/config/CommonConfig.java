@@ -22,6 +22,7 @@ import com.jfinal.render.ViewType;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wukm.mtool.annotation.DBModel;
 import org.wukm.mtool.interceptor.LoggerInterceptor;
 import org.wukm.mtool.model.CloudBean;
 import org.wukm.mtool.model.ServerBean;
@@ -122,17 +123,48 @@ public class CommonConfig extends JFinalConfig {
         mysqlPlugin.setDialect(new MysqlDialect());
         mysqlPlugin.setTransactionLevel(8);
         mysqlPlugin.setShowSql(true);
-        mysqlPlugin.addMapping("toolMenu","id", ToolMenu.class);
-        mysqlPlugin.addMapping("cloud","id", CloudBean.class);
-        mysqlPlugin.addMapping("ServerList","id", ServerBean.class);
+        ModelScanner modelScanner = new ModelScanner();
+        modelScanner.addScanPackageName("org.wukm.mtool.model");
+        List<String> classes = modelScanner.loadClasses();
+        for(String clazz:classes){
+            logger.info("clazz:" + clazz);
+            processClass(clazz,mysqlPlugin);
+        }
+        prop = PropKit.use("system.properties");
+        int index = 0;
+        for(Object key : prop.getProperties().keySet()){
+            logger.info("key=" + key + ";value:" + prop.get(key.toString()));
+        }
+        logger.info("----:" + prop.get("datasource." + index + ".name"));
+        while(prop.containsKey("datasource." + index + ".file")) {
+            logger.info("load:" + prop.get("datasource." + index + ".name"));
+            logger.info("load:" + prop.get("datasource." + index + ".file"));
+            ConstantUtil.REPORT_CONFIG_NAME.put(index,prop.get("datasource." + index + ".name"));
+            C3p0Plugin reportDatasource = new C3p0Plugin(new File(prop.get("datasource." + index + ".file")));
+            me.add(reportDatasource);
+            ActiveRecordPlugin reportMysqlPlugin = new ActiveRecordPlugin(prop.get("datasource." + index + ".name"), reportDatasource);
+            me.add(reportMysqlPlugin);
+            reportMysqlPlugin.setDevMode(true); //是否开启开发模式
+            reportMysqlPlugin.setDialect(new MysqlDialect());
+            reportMysqlPlugin.setTransactionLevel(8);
+            reportMysqlPlugin.setShowSql(true);
+            index ++ ;
+        }
+    }
 
-        C3p0Plugin reportDatasource = new C3p0Plugin(loadPropertyFile("report.properties"));
-        me.add(reportDatasource);
-        ActiveRecordPlugin reportMysqlPlugin = new ActiveRecordPlugin(ConstantUtil.REPORT_CONFIG_NAME,reportDatasource);
-        me.add(reportMysqlPlugin);
-        reportMysqlPlugin.setDevMode(true); //是否开启开发模式
-        reportMysqlPlugin.setDialect(new MysqlDialect());
-        reportMysqlPlugin.setTransactionLevel(8);
-        reportMysqlPlugin.setShowSql(true);
+    private void processClass(String clazz,ActiveRecordPlugin plugin){
+        try {
+            Class cl = Class.forName(clazz);
+            logger.info("isAnnotation:" + cl.isAnnotation());
+            logger.info("isAnnotationPresent:" + cl.isAnnotationPresent(DBModel.class));
+            if(cl.isAnnotationPresent(DBModel.class)){
+                logger.info("scan model:" + cl.getCanonicalName());
+                DBModel dbModel = (DBModel)cl.getAnnotation(DBModel.class);
+                plugin.addMapping(dbModel.name(),dbModel.id(),cl);
+            }
+
+        } catch (ClassNotFoundException e){
+            logger.error("ClassNotFoundException:" + e.getMessage(),e);
+        }
     }
 }

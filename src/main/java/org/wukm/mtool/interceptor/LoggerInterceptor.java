@@ -22,9 +22,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.wukm.mtool.util.ConstantUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -76,6 +78,10 @@ public class LoggerInterceptor implements Interceptor{
         if(!StringUtils.isBlank(para)){
             String[] paras = para.split("-");
             printRequest(Arrays.asList(paras));
+        }
+        if(StringUtils.isBlank(ConstantUtil.SYSTEM_ROOT)) {
+            File f = new File(c.getRequest().getSession().getServletContext().getRealPath("/"));
+            ConstantUtil.SYSTEM_ROOT = f.getAbsolutePath();
         }
         inv.invoke();
 

@@ -15,6 +15,10 @@ import com.jfinal.kit.PropKit;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -23,7 +27,10 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URL;
 import java.net.URLEncoder;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 import java.util.*;
 
@@ -148,6 +155,40 @@ public class CommonUtil {
         System.out.println(System.currentTimeMillis());
     }
 
+    /**
+     * 微信MD5签名
+     * @param sign
+     * @return
+     */
+    public static String signMd5(Map<String,String> sign){
+        if(sign == null){
+            return null;
+        }
+        Set<String> keys = sign.keySet();
+        List<String> sortKey = new ArrayList<String>(keys);
+        Collections.sort(sortKey);
+        StringBuilder signStr = new StringBuilder();
+        for(String key:sortKey){
+            if(!StringUtils.isBlank(sign.get(key))){
+                signStr.append(key + "=" + sign.get(key) + "&");
+            }
+        }
+        signStr.append("key=" + ConstantUtil.WX_SIGN_KEY);
+        return md5(signStr.toString());
+    }
+
+    public static String md5(String value) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] s = value.getBytes();
+            return Hex.encodeHexString(md.digest(s)).toLowerCase();
+        } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return DigestUtils.md5Hex(value.getBytes()).toUpperCase();
+    }
+
     public static void sendMail(String serverName,String content,String to){
         Prop prop = PropKit.use("mail.properties");
         Prop keyFile = PropKit.use("system.properties");
@@ -199,5 +240,54 @@ public class CommonUtil {
         }catch (MessagingException mex) {
             LOG.error("send email exception:" + mex.getMessage(),mex);
         }
+    }
+
+    /**
+     * "file:/home/whf/cn/fh" -> "/home/whf/cn/fh"
+     * "jar:file:/home/whf/foo.jar!cn/fh" -> "/home/whf/foo.jar"
+     */
+    public static String getRootPath(URL url) {
+        String fileUrl = url.getFile();
+        int pos = fileUrl.indexOf('!');
+
+        if (-1 == pos) {
+            return fileUrl;
+        }
+        return fileUrl.substring(5, pos);
+    }
+
+    /**
+     * "Apple.class" -> "Apple"
+     */
+    public static String trimExtension(String name) {
+        int pos = name.indexOf('.');
+        if (-1 != pos) {
+            return name.substring(0, pos);
+        }
+        return name;
+    }
+
+    /**
+     * 详细见微信的接口规范:https://pay.weixin.qq.com/wiki/doc/api/native.php?chapter=9_6
+     * map convert xml
+     * @param map
+     * @return
+     */
+    public static String printOutXml(Map<String,String> map){
+        OutputFormat format = new OutputFormat();
+        format.setSuppressDeclaration(true);
+        Document document = DocumentHelper.createDocument();
+        Element root = DocumentHelper.createElement("xml");
+        document.setRootElement(root);
+        Set<String> tempKeys = map.keySet();
+        for(String key:tempKeys){
+            if(StringUtils.isBlank(map.get(key))){
+                root.addElement(key).setText("");
+            } else {
+                root.addElement(key).setText(map.get(key));
+
+            }
+        }
+        return document.getRootElement().asXML();
     }
 }

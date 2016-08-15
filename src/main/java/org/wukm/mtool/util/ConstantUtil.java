@@ -10,6 +10,9 @@
  */
 package org.wukm.mtool.util;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Create with IntelliJ IDEA
  * Project name : common
@@ -31,5 +34,9 @@ public class ConstantUtil {
 
     public static String CLOUD_PRIVATE_KEY = null;
 
-    public static String REPORT_CONFIG_NAME = "report";
+    public static String SYSTEM_ROOT = null;
+
+    public static Map<Integer,String> REPORT_CONFIG_NAME = new HashMap<>();
+
+    public static String WX_SIGN_KEY = "96aba207665bd335241105bb9bb01939";
 }

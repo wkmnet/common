@@ -34,5 +34,6 @@ public class RestfulRoutes extends Routes {
         add("/api/monitor",MonitorController.class);
         add("/api/system",SystemController.class);
         add("/api/report",ReportController.class);
+        add("/api/checkCharge",CheckChargeController.class);
     }
 }

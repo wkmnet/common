@@ -11,6 +11,7 @@
 package org.wukm.mtool.model;
 
 import com.jfinal.plugin.activerecord.Model;
+import org.wukm.mtool.annotation.DBModel;
 
 /**
  * Create with IntelliJ IDEA
@@ -23,6 +24,7 @@ import com.jfinal.plugin.activerecord.Model;
  * ---------------------------------
  * To change this template use File | Settings | File and Code Templates.
  */
+@DBModel(name = "cloud",id = "id")
 public class CloudBean extends Model<CloudBean> {
     //方便查询使用
     public static CloudBean cloud = new CloudBean();

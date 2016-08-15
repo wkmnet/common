@@ -79,7 +79,7 @@ public class CloudService {
             params.put("UrlList." + i,temp.toString());
         }
 
-        params.put("Signature", CommonUtil.siginUcloud(params));
+//        params.put("Signature", CommonUtil.siginUcloud(params));
         return processRequest(params);
     }
 
