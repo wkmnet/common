@@ -14,6 +14,7 @@ import com.jfinal.aop.Duang;
 import net.sf.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
+import org.apache.http.HttpStatus;
 import org.quartz.Calendar;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -68,8 +69,14 @@ public class MonitorJob implements Job {
                 serverBean.set("status",0);
                 output.append("change status:0");
                 if(!StringUtils.isBlank(serverBean.getStr("notifyMail"))){
-                    String content = serverBean.getStr("serverDomain") + ":服务无法连接,请尽快处理!";
-                    CommonUtil.sendMail(serverBean.getStr("serverName"),content,
+                    StringBuilder content = new StringBuilder();
+                    content.append(serverBean.getStr("serverDomain") + ":服务无法连接,请尽快处理!<br/>");
+                    content.append("响应码:" + jo.getInt("code"));
+                    content.append("<br/>");
+                    content.append("响应信息:" + jo.getString("message"));
+                    content.append("<br/>");
+                    content.append("响应体:" + jo.getString("body"));
+                    CommonUtil.sendMail(serverBean.getStr("serverName"),content.toString(),
                             serverBean.getStr("notifyMail"));
                 }
             }
@@ -92,7 +99,7 @@ public class MonitorJob implements Job {
             return false;
         }
         if(object.containsKey("code")){
-            return object.getInt("code") == 0;
+            return object.getInt("code") == HttpStatus.SC_OK;
         }
         return false;
     }

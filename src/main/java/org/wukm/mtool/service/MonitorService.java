@@ -325,10 +325,16 @@ public class MonitorService {
     public JSONObject scanServer(String address){
         Request request = Request.Get(address);
         Response response = null;
+        JSONObject result = new JSONObject();
         try {
             response = request.execute();
-            String body = response.returnContent().asString();
-            return JSONObject.fromObject(body);
+            if(response != null) {
+                result.put("code", response.returnResponse().getStatusLine().getStatusCode());
+                result.put("message",response.returnResponse().getStatusLine().getReasonPhrase());
+                String body = response.returnContent().asString();
+                result.put("body", body);
+            }
+            return result;
         } catch (Exception e){
             logger.info("Exception:" + e.getMessage(),e);
         } finally {
