@@ -55,7 +55,8 @@
                     <th>序号</th>
                     <th>服务器名称</th>
                     <th>服务器域名</th>
-                    <th>异常通知邮箱</th>
+                    <th>测试地址</th>
+                    <th>通知邮箱</th>
                     <th>操作</th>
                 </tr>
                 </thead>
@@ -64,6 +65,7 @@
                     <td>{{$index + 1}}</td>
                     <td>{{s.serverName}}</td>
                     <td>{{s.serverDomain}}</td>
+                    <td>{{s.checkInterface}}</td>
                     <td>{{s.notifyMail}}</td>
                     <td>
                         <button type="button" class="btn btn-default btn-xs" ng-click="deleteMonitorServer(s.id)">
@@ -88,7 +90,7 @@
                 <input ng-model="serverBean.checkInterface" type="text" class="form-control" placeholder="http://xxx.com/abc.json">
             </div><br>
             <div class="input-group">
-                <span class="input-group-addon">检测地址</span>
+                <span class="input-group-addon">通知邮箱</span>
                 <input ng-model="serverBean.notifyMail" type="text" class="form-control" placeholder="abc@vmovier.cc;bce@vmovier.cc">
             </div><br>
         </form>

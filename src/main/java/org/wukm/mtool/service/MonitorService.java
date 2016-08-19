@@ -12,6 +12,8 @@ package org.wukm.mtool.service;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.SystemUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.fluent.Request;
@@ -30,6 +32,7 @@ import java.util.StringTokenizer;
 import com.sun.management.OperatingSystemMXBean;
 import org.wukm.mtool.model.ServerBean;
 import org.wukm.mtool.util.CommonUtil;
+import org.wukm.mtool.util.ConstantUtil;
 
 
 /**
@@ -329,9 +332,10 @@ public class MonitorService {
         try {
             response = request.execute();
             if(response != null) {
-                result.put("code", response.returnResponse().getStatusLine().getStatusCode());
-                result.put("message",response.returnResponse().getStatusLine().getReasonPhrase());
-                String body = response.returnContent().asString();
+                HttpResponse hr = response.returnResponse();
+                result.put("code", hr.getStatusLine().getStatusCode());
+                result.put("message",hr.getStatusLine().getReasonPhrase());
+                String body = IOUtils.toString(hr.getEntity().getContent(), ConstantUtil.CHARSET_UTF_8);
                 result.put("body", body);
             }
             return result;
