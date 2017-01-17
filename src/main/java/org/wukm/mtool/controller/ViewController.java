@@ -30,4 +30,11 @@ public class ViewController extends Controller {
     //日志
     protected Logger logger = LoggerFactory.getLogger(this.getClass());
 
+    public void login(){
+        String name = getPara("name");
+        String password = getPara("password");
+        logger.info("user:{},password:{}",name,password);
+        render("/html/view/success.html");
+    }
+
 }

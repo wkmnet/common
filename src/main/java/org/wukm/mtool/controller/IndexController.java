@@ -48,4 +48,8 @@ public class IndexController extends ViewController {
     public void report(){
         render("/html/tool/report.html");
     }
+
+    public void master(){
+        render("/html/view/index.html");
+    }
 }
