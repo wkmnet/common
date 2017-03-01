@@ -22,6 +22,7 @@ import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.wukm.mtool.model.ServerBean;
+import org.wukm.mtool.service.DingWebhookService;
 import org.wukm.mtool.service.MonitorService;
 import org.wukm.mtool.util.CommonUtil;
 
@@ -68,7 +69,10 @@ public class MonitorJob implements Job {
             } else {
                 serverBean.set("status",0);
                 output.append("change status:0");
-                if(!StringUtils.isBlank(serverBean.getStr("notifyMail"))){
+                if(serverBean.getStr("notifyMail").indexOf('@') < 0){
+                    DingWebhookService webhookService = Duang.duang(DingWebhookService.class);
+                    webhookService.dingWebhook(serverBean,jo);
+                }else if(!StringUtils.isBlank(serverBean.getStr("notifyMail"))){
                     StringBuilder content = new StringBuilder();
                     content.append(serverBean.getStr("serverDomain") + ":服务无法连接,请尽快处理!<br/>");
                     content.append("响应码:" + jo.getInt("code"));
