@@ -10,7 +10,10 @@
  **/
 package org.wukm.mtool.service;
 
+import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.SystemUtils;
 import org.apache.http.client.fluent.Request;
 import org.apache.http.client.fluent.Response;
@@ -20,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.wukm.mtool.model.ServerBean;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * Create with IntelliJ IDEA
@@ -51,7 +55,8 @@ public class DingWebhookService {
         text.append(SystemUtils.LINE_SEPARATOR);
         text.append("## ".concat("一、报告提供商"));
         text.append(SystemUtils.LINE_SEPARATOR);
-        text.append("![my-logo](http://libs.cf/images/favicon.ico)");
+        text.append("报告提供服务商:");
+        text.append("![my-logo](http://cs.vmoiver.com/Uploads/Activity/2016-05-04/5729b59da6d7e.png)");
         text.append(SystemUtils.LINE_SEPARATOR);
         text.append("## ".concat("二、报告内容"));
         text.append(SystemUtils.LINE_SEPARATOR);
@@ -62,6 +67,19 @@ public class DingWebhookService {
         text.append(">* ".concat("错误详情:").concat(response.getString("body")));
         text.append(SystemUtils.LINE_SEPARATOR);
         body.put("text",text.toString());
+        JSONObject at = new JSONObject();
+        JSONArray mobiles = new JSONArray();
+        mobiles.addAll(Arrays.asList(StringUtils.split(serverBean.getStr("notifyMail"),',')));
+        if(mobiles.isEmpty()) {
+            at.put("isAtAll",false);
+        } else {
+            if(mobiles.contains("all")) {
+                at.put("isAtAll",true);
+            } else {
+                at.put("isAtAll",false);
+                at.put("atMobiles", mobiles);
+            }
+        }
         notify.put("markdown",body);
         Request request = Request.Post(WEBHOOK_URL).bodyString(notify.toString(), ContentType.APPLICATION_JSON);
         Response resp = null;
